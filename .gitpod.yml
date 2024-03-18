@@ -8,9 +8,9 @@ tasks:
 
     /workspace/conda/bin/mamba init bash
     source ${HOME}/.bashrc
-    mamba create -n annotation -c bioconda star scallop samtools -y
+    mamba create -n annotation -c bioconda star scallop fastqc samtools -y
 
-    gzip -dr /workspace/ensembl-annotation/Annotating_the_genome/Fastq
+    sh /workspace/get_ready.sh
 
   command: |
     /workspace/conda/bin/mamba init bash

@@ -1,0 +1,1 @@
+bsub -Is STAR --runMode genomeGenerate --genomeDir annotating_the_genome/genome/ --genomeFastaFiles annotating_the_genome/genome/Ovis_aries_rambouillet.ARS-UI_Ramb_v2.0.dna.primary_assembly.22.fa --outFileNamePrefix annotating_the_genome/genome/chr22_oari
