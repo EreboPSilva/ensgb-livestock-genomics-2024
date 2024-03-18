@@ -10,15 +10,13 @@ tasks:
     source ${HOME}/.bashrc
     mamba create -n annotation -c bioconda star scallop fastqc samtools -y
 
-    sh /workspace/ensgb-livestock-genomics-2024/get_ready.sh
-
   command: |
     /workspace/conda/bin/mamba init bash
     source ${HOME}/.bashrc
     mamba activate annotation
 
     cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome
-    clear
+    sh /workspace/ensgb-livestock-genomics-2024/get_ready.sh
 
 vscode:
   extensions:
