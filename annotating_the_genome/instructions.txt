@@ -1,0 +1,103 @@
+###########
+# STEP 01 #
+###########
+
+-> Review what has happened during the break!
+
+###########
+# STEP 02 #
+###########
+
+-> fastqc
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome;
+mkdir fastq/qc;
+
+fastqc -t 2 -o fastq/qc/ fastq/texel_colon_1.fastq fastq/texel_colon_2.fastq;
+fastqc -t 2 -o fastq/qc/ fastq/texel_pit_1.fastq fastq/texel_pit_2.fastq;
+
+-> Review what fastqc produced!
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/fastq/qc;
+
+for i in `ls *.zip`; do unzip $i; done;
+
+###########
+# STEP 03 #
+###########
+
+-> Quantifying with Salmon
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/;
+mkdir genome/quant;
+
+salmon index -t genome/Ovis_aries_rambouillet.ARS-UI_Ramb_v2.0.dna.primary_assembly.22.fa -i genome/salmon_oar_index;
+
+salmon quant -i genome/salmon_oar_index -l A -1 fastq/texel_colon_1.fastq -2 fastq/texel_colon_2.fastq -p 8 --validateMappings -o genome/quants/texel_colon_quant;
+salmon quant -i genome/salmon_oar_index -l A -1 fastq/texel_pit_1.fastq -2 fastq/texel_pit_2.fastq -p 8 --validateMappings -o genome/quants/texel_pit_quant;
+
+-> Review the results!
+
+###########
+# STEP 04 #
+###########
+
+-> STAR alignment
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/;
+
+STAR --runMode genomeGenerate --genomeDir genome/ --genomeFastaFiles genome/Ovis_aries_rambouillet.ARS-UI_Ramb_v2.0.dna.primary_assembly.22.fa --outFileNamePrefix genome/chr12_GRCz11;
+
+STAR --runThreadN 8 --genomeDir genome/ --readFilesIn fastq/texel_colon_1.fastq fastq/texel_colon_2.fastq --outSAMtype BAM SortedByCoordinate --outFileNamePrefix bam/texel_colon_;
+STAR --runThreadN 8 --genomeDir genome/ --readFilesIn fastq/texel_pit_1.fastq fastq/texel_pit_2.fastq --outSAMtype BAM SortedByCoordinate --outFileNamePrefix bam/texel_pit_;
+
+###########
+# STEP 05 #
+###########
+
+-> Get basic statistics
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/;
+
+samtools flagstat bam/texel_colon_Aligned.sortedByCoord.out.bam;
+samtools flagstat bam/texel_pit_Aligned.sortedByCoord.out.bam;
+
+-> Review results!
+
+###########
+# STEP 05 #
+###########
+
+-> Index bams
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/;
+
+samtools index bam/texel_colon_Aligned.sortedByCoord.out.bam;
+samtools index bam/texel_pit_Aligned.sortedByCoord.out.bam;
+
+###########
+# STEP 07 #
+###########
+
+-> Assemble the transcripts
+
+cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome/;
+mkdir gtf;
+
+scallop -i bam/texel_colon_Aligned.sortedByCoord.out.bam -o gtf/texel_colon_scallop.gtf > texel_colon_scallop.out
+scallop -i bam/texel_pit_Aligned.sortedByCoord.out.bam -o gtf/texel_pit_scallop.gtf > texel_pit_scallop.out
+
+-> Review results!
+
+###########
+# STEP 08 #
+###########
+
+-> Browse the genome files produced:
+
+http://www.ensembl.org/Ovis_aries_rambouillet/Location/View?db=core;g=ENSOARG00020022666;r=22:23420325-23451572
+
+https://ftp.ebi.ac.uk/pub/databases/ensembl/ereboperezsilva/livestock_genomics_2024/
+
+https://ftp.ebi.ac.uk/pub/databases/ensembl/ereboperezsilva/bga23/results/
+
