@@ -33,6 +33,7 @@ To check which directory you are in, please execute:
     pwd
 
 > :warning: At the start of each step, you should be in cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome so run the `cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome` command if you get any "file / path not found" errors.
+
 > :warning: You should always see `(annotation)` at the beguining of your line (before the green `gitpod` part). If you can't see it, run `conda activate annotation` and this will prevent many errors.
 
 To check what is in the directories, please execute:
