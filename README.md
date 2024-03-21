@@ -46,12 +46,18 @@ Step 1: Check the quality of the data
 
 This time, the data has been previously checked, of course, and due to the vicissitudes of the practicum, the results will not be great, but it's a good opportunity to practise.
 
-FastQC command to run:
+Before running the program, we need to create a folder for the results:
 
     mkdir fastq/qc;
-    fastqc -t 2 -o fastq/qc/ fastq/texel_colon_1.fastq fastq/texel_colon_2.fastq;
+
+Now we can check the quality of the pit samples:
+
     fastqc -t 2 -o fastq/qc/ fastq/texel_pit_1.fastq fastq/texel_pit_2.fastq;
 
+And that of the colon ones:
+
+    fastqc -t 2 -o fastq/qc/ fastq/texel_colon_1.fastq fastq/texel_colon_2.fastq;
+    
 In this way, we are creating a folder to store the results, and then running the software FastQC to check for the many variables that the program validates.
 
 We'll have 2 results per read (so 8 in total): a `.zip` and a `.html`. To extract the zip files and be able to read them, we can execute the following bash one-liner:
