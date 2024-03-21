@@ -16,7 +16,7 @@ tasks:
     mamba activate annotation
 
     cd /workspace/ensgb-livestock-genomics-2024/annotating_the_genome
-    sh /workspace/ensgb-livestock-genomics-2024/get_ready.sh
+    #sh /workspace/ensgb-livestock-genomics-2024/get_ready.sh
 
 vscode:
   extensions:
